@@ -1,0 +1,129 @@
+<<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orçamento JR Construções</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .produto {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .produto input {
+      width: 60px;
+    }
+    #total {
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    #whatsappLink {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #25D366;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    #whatsappLink:hover {
+      background: #1ebe5d;
+    }
+  </style>
+</head>
+<body>
+  <h1>JR Construções</h1>
+  <h2>Selecione os produtos e gere seu orçamento</h2>
+
+  <div id="produtos"></div>
+
+  <div id="total">Total: R$ 0,00</div>
+
+  <a id="whatsappLink" href="#" target="_blank">Enviar orçamento via WhatsApp</a>
+
+  <script>
+    // Lista de produtos atualizada com todos os itens: Cimentos, Areia, Brita, Tijolo e Itens da Placa.
+    const produtos = [
+      // Materiais básicos reintroduzidos/adicionados (preços do código original e pesquisa)
+      { nome: "Cimento Bravo 50kg", preco: 50.00 },
+      { nome: "Cimento Itaqui 50kg", preco: 48.00 },
+      { nome: "Areia 1m³", preco: 120.00 },
+      { nome: "Brita (Pedra) 1m³", preco: 140.00 },
+      { nome: "Tijolo (Unidade)", preco: 1.90 },
+
+      // Itens da Placa
+      { nome: "COLUNA 3/8", preco: 130.00 },
+      { nome: "COLUNA 5/16", preco: 97.00 },
+      { nome: "TRELICA GROSSA", preco: 34.99 },
+      { nome: "TRELICA FINA", preco: 26.00 },
+      { nome: "VERGALHÃO 5/16", preco: 70.00 }, 
+      { nome: "VERGALHÃO 1/4", preco: 50.00 }, 
+      { nome: "ARGAMASSA AC II", preco: 9.50 },
+      { nome: "ARGAMASSA AC III", preco: 17.50 },
+      { nome: "PORTA 160", preco: 160.00 },
+      { nome: "CANO de 100mm", preco: 69.00 },
+      { nome: "TABUAS de 13cm", preco: 185.00 },
+      { nome: "TABUAS de 15cm", preco: 198.00 },
+      { nome: "TELHA BRASILITE", preco: 24.00 },
+      { nome: "CX DE PORTA", preco: 90.00 },
+      { nome: "CX D'AGUA 1000L", preco: 385.00 },
+      { nome: "CX D'AGUA 500L", preco: 270.00 }
+    ];
+
+    const container = document.getElementById('produtos');
+
+    produtos.forEach((produto, index) => {
+      const div = document.createElement('div');
+      div.className = 'produto';
+      div.innerHTML = `
+        <span>${produto.nome} (R$ ${produto.preco.toFixed(2)})</span>
+        <input type="number" min="0" value="0" id="qtd${index}">
+      `;
+      container.appendChild(div);
+    });
+
+    const totalDiv = document.getElementById('total');
+    const whatsappLink = document.getElementById('whatsappLink');
+
+    function atualizarTotal() {
+      let total = 0;
+      let mensagem = "Orçamento JR Construções:%0A";
+      produtos.forEach((produto, index) => {
+        const qtd = parseInt(document.getElementById(`qtd${index}`).value) || 0;
+        if(qtd > 0){
+          const subtotal = qtd * produto.preco;
+          total += subtotal;
+          mensagem += `${produto.nome}: ${qtd} x R$ ${produto.preco.toFixed(2)} = R$ ${subtotal.toFixed(2)}%0A`;
+        }
+      });
+      totalDiv.innerHTML = `Total: R$ ${total.toFixed(2)}`;
+      
+      const numeroWhats = "5598987373928"; 
+      
+      whatsappLink.href = `https://wa.me/${numeroWhats}?text=${mensagem}Total: R$ ${total.toFixed(2)}`;
+    }
+
+    // Atualizar sempre que mudar quantidade
+    produtos.forEach((_, index) => {
+      document.getElementById(`qtd${index}`).addEventListener('input', atualizarTotal);
+    });
+
+    atualizarTotal(); 
+  </script>
+</body>
+</html>!DOCTYPE html>
